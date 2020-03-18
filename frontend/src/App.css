@@ -1,0 +1,36 @@
+#root {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande';
+}
+
+.nav-bg {
+    background-color: #0092ff;
+    height: 5vw;
+}
+
+.nav-style {
+    color: white;
+    font-size: 20px;
+    
+}
+
+.nav-style:hover {
+    color: #d6d5d5;
+    text-decoration: none;
+}
+
+.nav-style:active {
+    color: #d6d5d5;
+}
+
+.nav-item {
+    padding: 25px 25px;
+}
+
+.jumbotron {
+    padding: 15px 15px;
+    background-color: #2aa3ff;
+}
+
+.home-heading {
+    color: white;
+}
