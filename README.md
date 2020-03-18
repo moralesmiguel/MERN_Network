@@ -86,16 +86,18 @@ Tests were done on both the backend and frontend testing routes such as users an
 ### Screenshots
 
 Homepage
+
 ![home](https://user-images.githubusercontent.com/51275356/76921186-00bba480-6893-11ea-8209-a323a4b45506.JPG)
 
-
 Sign-in Form
+
 ![signin](https://user-images.githubusercontent.com/51275356/76921198-0a450c80-6893-11ea-87df-9483306c9353.JPG)
 
-
 Signed In Profile
+
 ![profilesignedin](https://user-images.githubusercontent.com/51275356/76921208-0fa25700-6893-11ea-9eb3-fb5854b5e708.JPG)
 
 
 Admin Panel
+
 ![adminpanel](https://user-images.githubusercontent.com/51275356/76921216-14670b00-6893-11ea-8bb7-b5de0852341d.JPG)
