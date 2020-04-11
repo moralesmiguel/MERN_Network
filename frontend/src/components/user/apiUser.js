@@ -63,3 +63,35 @@ export const updateUserHeaderName = (user, next) => {
         }
     }
 };
+
+export const follow = (userId, token, followId) => {
+    return fetch(`https://tranquil-temple-06509.herokuapp.com/user/follow`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({userId, followId})
+    })
+    .then(response => {
+        return response.json();
+    })
+    .catch(err => console.log(err));
+};
+
+export const unfollow = (userId, token, unfollowId) => {
+    return fetch(`https://tranquil-temple-06509.herokuapp.com/user/unfollow`, {
+        method: "PUT",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({userId, unfollowId})
+    })
+    .then(response => {
+        return response.json();
+    })
+    .catch(err => console.log(err));
+};

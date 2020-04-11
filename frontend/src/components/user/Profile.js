@@ -5,17 +5,42 @@ import {read} from './apiUser';
 import avatar from '../images/userdefaultavatar.png';
 import DeleteUser from './DeleteUser';
 import {listByUser} from "../post/apiPost";
-import ProfileExtras from "../user/ProfileExtras";
+import ProfileExtras from "./ProfileExtras";
+import FollowButton from "./FollowButton";
 
 class Profile extends Component {
     constructor(){
         super();
         this.state = {
-            user: "",
+            user: {following:[], followers:[]},
             redirectSignIn: false,
-            posts: []
+            posts: [],
+            following: false,
+            error: ''
         };
     }
+    //Check if it's already following
+    checkFollow = user => {
+        const jwt = isAuthenticated();
+        const match = user.followers.find(follower => {
+          return follower._id === jwt.user._id;
+        });
+        return match;
+      };
+    //
+    clickFollowButton = callApi => {
+        const userId = isAuthenticated().user._id;
+        const token = isAuthenticated().token;
+        callApi(userId, token, this.state.user._id)
+        .then(data=>{
+            if(data.error){
+                this.setState({error: data.error});
+            } else {
+                this.setState({user: data, following: !this.state.following});
+            }
+        });
+    };
+
     //Get the user id along with the token
     init = (userId) => {
         const token = isAuthenticated().token;
@@ -24,7 +49,8 @@ class Profile extends Component {
             if(data.error) {
                 this.setState({redirectSignIn: true});
             } else {
-                this.setState({user: data});
+                let following = this.checkFollow(data);
+                this.setState({user: data, following});
                 this.loadPosts(data._id);
             }
         });
@@ -54,7 +80,7 @@ class Profile extends Component {
     render() {
         const {redirectSignIn, user, posts} = this.state;
         if(redirectSignIn) return <Redirect to="/signin" />
-        const pictureUrl = user._id ? `http://localhost:8080/user/picture/${user._id}?${new Date}.getTime()` : avatar;
+        const pictureUrl = user._id ? `https://tranquil-temple-06509.herokuapp.com/user/picture/${user._id}?${new Date}.getTime()` : avatar;
         return (
             <div className="container">
                 <h2 className="mt-5 mb-5">Profile</h2>
@@ -68,11 +94,13 @@ class Profile extends Component {
                             <p>Email: {user.email}</p>
                             <p>{`Joined since ${new Date(user.created).toDateString()}`}</p>
                         </div>
-                    {isAuthenticated().user && isAuthenticated().user._id===user._id && (
+                    {isAuthenticated().user && isAuthenticated().user._id===user._id ? (
                         <div className="d-inline-block mt-5">
                             <Link className="btn btn-raised btn-info mr-5" to={"/post/create"}>Create Post</Link>
                             <Link className="btn btn-raised btn-success mr-5" to={`/user/edit/${user._id}`}>Edit Profile</Link>
                         </div>
+                    ) : (
+                        <FollowButton following={this.state.following} onButtonClick={this.clickFollowButton} />
                     )}
                     {isAuthenticated().user &&
         isAuthenticated().user.role === "admin" && (
@@ -99,7 +127,10 @@ class Profile extends Component {
                 <div className="row">
                         <div className="col md-12">
                             <p className="lead">{user.about}</p>
-                            <ProfileExtras posts={posts}/>
+                            <ProfileExtras 
+                            followers={user.followers}
+                            following={user.following}
+                            posts={posts}/>
                         </div>
                 </div>
             </div>
